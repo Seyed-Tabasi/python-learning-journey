@@ -1,0 +1,60 @@
+snacks = {
+    1: {"name": "Chips", "price": 1.50},
+    2: {"name": "Chocolate Bar", "price": 2.00},
+    3: {"name": "Soda", "price": 1.75},
+    4: {"name": "Cookies", "price": 1.25},
+    5: {"name": "Candy", "price": 0.99},
+    6: {"name": "Nuts", "price": 2.25},
+    7: {"name": "Juice", "price": 1.80},
+    8: {"name": "Gum", "price": 0.50},
+    9: {"name": "Crackers", "price": 1.10},
+    10: {"name": "Granola Bar", "price": 1.30}
+}
+
+def show_menu():
+    print("\n Welcome to the Snack Machine!")
+    print("Here are the available items:\n")
+    for number, item in snacks.items():
+        print(f"{number}. {item['name']} - ${item['price']:.2f}")
+    print()
+
+def get_user_choice():
+    while True:
+        try:
+            choice = int(input("Select a snack by entering the number (1-10): "))
+            if choice in snacks:
+                return choice
+            else:
+                print("Invalid selection. Please choose a number between 1 and 10.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+def process_payment(price):
+    print(f"The item costs ${price:.2f}")
+    total_inserted = 0.0
+    while total_inserted < price:
+        try:
+            inserted = float(input(f"Insert money (${price - total_inserted:.2f} remaining): $"))
+            if inserted <= 0:
+                print("Please insert a positive amount.")
+                continue
+            total_inserted += inserted
+        except ValueError:
+            print("Invalid amount. Please enter a number.")
+
+    change = round(total_inserted - price, 2)
+    return change
+
+def snack_machine():
+    show_menu()
+    choice = get_user_choice()
+    item = snacks[choice]
+    change = process_payment(item["price"])
+
+    print(f"\nDispensing {item['name']}...")
+    if change > 0:
+        print(f"Returning change: ${change:.2f}")
+    print("Thank you for your purchase! \n")
+
+if __name__ == "__main__":
+    snack_machine()
